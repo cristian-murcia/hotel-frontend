@@ -1,0 +1,54 @@
+<div class="container mt-1">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-0">
+      <a class="navbar-brand" href="#">
+        <img
+          src="https://media-exp1.licdn.com/dms/image/C4E0BAQFDuWJd52XeAw/company-logo_200_200/0/1551819205162?e=2159024400&v=beta&t=vp7jtkG_8Nr9-JByiEXrlLgxgLJ2s_MJofrJECUMlwo"
+          width="65" height="65" alt="">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto mt-1">
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/inicio']">Hoteles </a>
+          </li>
+          <li class="nav-item">
+            <p class="nav-link">Buscar por: </p>
+          </li>
+          <li class="nav-item">
+            <p class="nav-link clasificacion"> Estrellas
+              <input id="radio1" type="radio" name="estrellas" value="1">
+              <label for="radio1">★</label>
+              <input id="radio2" type="radio" name="estrellas" value="2">
+              <label for="radio2">★</label>
+              <input id="radio3" type="radio" name="estrellas" value="3">
+              <label for="radio3">★</label>
+              <input id="radio4" type="radio" name="estrellas" value="4">
+              <label for="radio4">★</label>
+              <input id="radio5" type="radio" name="estrellas" value="5">
+              <label for="radio5">★</label>
+            </p>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Precio
+            </a>
+            <div class="dropdown-menu " aria-labelledby="navbarDropdown">
+              <p class="dropdown-item" href="#">Listar de</p>
+              <div class="dropdown-divider py-0"></div>
+              <a class="dropdown-item" href="#">Mayor a menor</a>
+              <a class="dropdown-item" href="#">Menor a mayor</a>
+            </div>
+          </li>
+        </ul>
+
+        <button class="btn btn-outline-success my-2 my-sm-0 mr-3" type="submit">Registrarte</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Inicio de sesión</button>
+      </div>
+    </nav>
+  </div>
