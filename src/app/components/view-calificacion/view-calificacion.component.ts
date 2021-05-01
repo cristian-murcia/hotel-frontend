@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, DoCheck } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { Coderror } from 'src/app/core/enum/coderror';
 import { LocalService } from 'src/app/core/service/local.service';
 import { ICalificacion } from 'src/app/models/calificaciones';
@@ -32,20 +33,23 @@ export class ViewCalificacionComponent implements OnInit {
   ngOnInit(): void {
     this.createFormCalificacion();
 
-    this.getCalifications(this.id_hotel);
-    if (this._storage.getJsonValue('user')) {
-      this.usuario = this._storage.getJsonValue('user');
-      this.formCalificacion.controls.usuario_userID.setValue(this.usuario.userID);
+    this._storage.usuario.subscribe((result) => {
+      this.usuario = result;
 
-      this.calificationMe();
-    }
+      if (result && result.userID) {
+        this.formCalificacion.controls.usuario_userID.setValue(this.usuario.userID);
+        this.calificationMe();
+        this.getCalifications(this.id_hotel, result.userID);
+      }
+      this.getCalifications(this.id_hotel);
+    })
   }
 
   /**
    *
    * @param id_hotel
    */
-  public async getCalifications(id_hotel: number): Promise<void> {
+  public async getCalifications(id_hotel: number, filter?: number): Promise<void> {
 
     let result = await this._calificacionService.getCalificationes(id_hotel);
     if (result.code != Coderror.Exitoso) {
@@ -68,7 +72,9 @@ export class ViewCalificacionComponent implements OnInit {
    */
   public async calificationMe(): Promise<void> {
     let result = await this._calificacionService.getMeCalification(this.id_hotel, this.usuario.userID);
-    if(result.code == Coderror.Exitoso){
+
+    if (result.code == Coderror.Exitoso) {
+      this.calificacion = result.calificacion;
       this.formCalificacion.patchValue({ ...result.calificacion });
     }
   }
@@ -86,7 +92,7 @@ export class ViewCalificacionComponent implements OnInit {
     let result = await this._calificacionService.createAndUpdateCalification(this.formCalificacion.value);
     if (result.code == Coderror.Exitoso) {
       Swal.fire('Satisfactorio', result.mensaje, 'success');
-      if(result.calificacion){
+      if (result.calificacion) {
         this.calificacion = result.calificacion;
         this.formCalificacion.controls.idcalificacion.setValue(this.calificacion.idcalificacion);
       }
@@ -100,7 +106,7 @@ export class ViewCalificacionComponent implements OnInit {
    *
    * @param id_calificacion
    */
-  public async removeCalificacion(id_calificacion: number): Promise<void>{
+  public async removeCalificacion(id_calificacion: number): Promise<void> {
     let result = await this._calificacionService.removeCalificacion(id_calificacion);
 
     if (result.code == Coderror.Exitoso) {

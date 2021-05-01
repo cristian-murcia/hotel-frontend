@@ -29,14 +29,15 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.usuario = this._storage.getJsonValue('user');
+    this._storage.usuario.subscribe(result => this.usuario = result);
     this.createForm();
     this.loginForm();
+    this._storage.change();
   }
 
-  public async createUser(): Promise<void>{
+  public async createUser(): Promise<void> {
 
-    if(this.formCreateUser.invalid){
+    if (this.formCreateUser.invalid) {
       this.errorCreate = true;
       return;
     }
@@ -44,7 +45,7 @@ export class HeaderComponent implements OnInit {
     let newUsuario = this.formCreateUser.value;
     let result = await this._usuarioService.createuser(newUsuario);
 
-    if(result.code == Coderror.Exitoso){
+    if (result.code == Coderror.Exitoso) {
       Swal.fire('Satisfactorio', result.mensaje, 'success');
     } else {
       Swal.fire('Ha ocurrido un problema', result.body, 'error');
@@ -55,8 +56,8 @@ export class HeaderComponent implements OnInit {
     return;
   }
 
-  public async login(): Promise<void>{
-    if(this.formLogin.invalid){
+  public async login(): Promise<void> {
+    if (this.formLogin.invalid) {
       this.errorLogin = true;
       return;
     }
@@ -66,11 +67,11 @@ export class HeaderComponent implements OnInit {
       this.formLogin.controls.userPassword.value
     );
 
-    if(result.code == Coderror.Exitoso){
+    if (result.code == Coderror.Exitoso) {
       Swal.fire('Satisfactorio', result.mensaje, 'success');
       this.usuario = result.usuario;
       this._storage.setJsonValue('user', this.usuario);
-      this._storage.usuario = this.usuario;
+      this._storage.change();
 
     } else {
       Swal.fire('Ha ocurrido un problema', result.mensaje, 'error');
@@ -81,9 +82,9 @@ export class HeaderComponent implements OnInit {
     return;
   }
 
-  public cerrarSesion(){
+  public cerrarSesion() {
     this._storage.clearToken();
-    this.usuario = this._storage.getJsonValue('user');
+    this._storage.change();
   }
 
   public createForm(): void {

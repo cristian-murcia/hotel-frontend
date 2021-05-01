@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { ViewCalificacionComponent } from './components';
 
 @Component({
   selector: 'app-root',

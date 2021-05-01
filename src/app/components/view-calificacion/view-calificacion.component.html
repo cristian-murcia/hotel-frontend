@@ -11,7 +11,7 @@
         <h5 class="col-12 col-md-8 col-lg-8 text-md-left mt-0 ">
           {{usuario.userName | titlecase}} {{usuario.userSurname | titlecase}}
         </h5>
-        <p class="col-12 col-md-4 col-lg-4 text-md-right text-sm-left mb-1">Hace 15 días</p>
+        <p class="col-12 col-md-4 col-lg-4 text-md-right text-sm-left mb-1">{{usuario.updatedAt | date:"long"}}</p>
       </div>
 
       <form [formGroup]="formCalificacion">
@@ -49,8 +49,8 @@
         <div class="float-right">
           <button class="btn btn-outline-info my-0 my-sm-0 py-0 px-1 mr-3" *ngIf="calificacion"
             (click)="removeCalificacion(formCalificacion.controls.idcalificacion.value)">Borrar</button>
-          <button class="btn btn-outline-success my-0 my-sm-0 py-0 px-1" *ngIf="!calificacion"
-            (click)="createAndUpdate()">Calificar</button>
+          <a class="btn btn-outline-success my-0 my-sm-0 py-0 px-1"
+            (click)="createAndUpdate()">Calificar</a>
         </div>
       </form>
 
@@ -58,35 +58,38 @@
   </div>
 
   <!--Comentarios predeterminados-->
-  <div class=" shadow-lg p-3 mb-2 bg-white rounded" *ngFor="let cal of calificaciones; let i = index">
-    <div class="media mb-2">
-      <img src="https://yt3.ggpht.com/ytc/AAUvwngCuYNxD6MXs-ihv_N4uBBCEZLkMp5jIrYn5VzW=s900-c-k-c0x00ffffff-no-rj"
-        class="mr-3" alt="..." style="max-width: 50px; min-height: 50px;">
-      <div class="media-body">
-        <div class="row w-100">
-          <h5 class="col-12 col-md-8 col-lg-8 text-md-left mt-0 ">{{cal.Usuario.nombre | titlecase}}
-            {{cal.Usuario.apellido | titlecase}}</h5>
-          <p class="col-12 col-md-4 col-lg-4 text-md-right text-sm-left mb-1">{{cal.updatedAt | date:"fullDate"}}</p>
+  <div>
+    <div class=" shadow-lg p-3 mb-2 bg-white rounded" *ngFor="let cal of calificaciones; let i = index">
+      <div class="media mb-2">
+        <img src="https://yt3.ggpht.com/ytc/AAUvwngCuYNxD6MXs-ihv_N4uBBCEZLkMp5jIrYn5VzW=s900-c-k-c0x00ffffff-no-rj"
+          class="mr-3" alt="..." style="max-width: 50px; min-height: 50px;">
+        <div class="media-body">
+          <div class="row w-100">
+            <h5 class="col-12 col-md-8 col-lg-8 text-md-left mt-0 ">{{cal.Usuario.nombre | titlecase}}
+              {{cal.Usuario.apellido | titlecase}}</h5>
+            <p class="col-12 col-md-4 col-lg-4 text-md-right text-sm-left mb-1">{{cal.updatedAt | date:"long"}}</p>
+          </div>
+
+          <!--Calificaciones-->
+          <p class="card-text py-0 mb-0 clasificacion"> Calificación:
+            <label [ngStyle]="{'color':cal.estrellas >= 1 ? 'orange' : 'gray' }" for="radio1">★</label>
+            <label [ngStyle]="{'color':cal.estrellas >= 2 ? 'orange' : 'gray' }" for="radio2">★</label>
+            <label [ngStyle]="{'color':cal.estrellas >= 3 ? 'orange' : 'gray' }" for="radio3">★</label>
+            <label [ngStyle]="{'color':cal.estrellas >= 4 ? 'orange' : 'gray' }" for="radio4">★</label>
+            <label [ngStyle]="{'color':cal.estrellas == 5 ? 'orange' : 'gray' }" for="radio5">★</label>
+          </p>
+
+          <output>
+            {{cal.comentario}}
+          </output>
         </div>
-
-        <!--Calificaciones-->
-        <p class="card-text py-0 mb-0 clasificacion"> Calificación:
-          <label [ngStyle]="{'color':cal.estrellas >= 1 ? 'orange' : 'gray' }" for="radio1">★</label>
-          <label [ngStyle]="{'color':cal.estrellas >= 2 ? 'orange' : 'gray' }" for="radio2">★</label>
-          <label [ngStyle]="{'color':cal.estrellas >= 3 ? 'orange' : 'gray' }" for="radio3">★</label>
-          <label [ngStyle]="{'color':cal.estrellas >= 4 ? 'orange' : 'gray' }" for="radio4">★</label>
-          <label [ngStyle]="{'color':cal.estrellas == 5 ? 'orange' : 'gray' }" for="radio5">★</label>
-        </p>
-
-        <output>
-          {{cal.comentario}}
-        </output>
       </div>
     </div>
   </div>
 
-  <div class="col">
-    <p *ngIf="!calificaciones">No hay comentarios de este hotel, inicia sesion y comenta</p>
+
+  <div class="col" *ngIf="!calificaciones && !calificacion">
+    <p>No hay comentarios de este hotel, inicia sesion y comenta</p>
   </div>
 
 </div>
