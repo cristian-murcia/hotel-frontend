@@ -6,7 +6,8 @@ import {
 } from '@angular/core';
 import { appRoutingProviders, routing } from './app.routing';
 import { HttpClientModule } from '@angular/common/http';
-0
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
 import { ListaHotelesComponent } from './components/lista-hoteles/lista-hoteles.component';
 import { ViewHotelComponent } from './components/view-hotel/view-hotel.component';
@@ -25,6 +26,7 @@ import { HeaderComponent } from './components/header/header.component';
     BrowserModule,
     HttpClientModule,
     routing,
+    FormsModule, ReactiveFormsModule
   ],
   providers: [
     appRoutingProviders,

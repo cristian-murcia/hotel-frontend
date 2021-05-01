@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Coderror } from 'src/app/core/enum/coderror';
 import { IHotel } from 'src/app/models/hotel';
-import { ApiService } from 'src/app/services/service/apiservice.service';
+import { ApiService } from 'src/app/core/service/apiservice.service';
 import { HotelesService } from '../../services/hoteles'
 
 @Component({
@@ -12,8 +12,9 @@ import { HotelesService } from '../../services/hoteles'
 })
 export class ListaHotelesComponent implements OnInit {
 
-  public hoteles: IHotel[] = [];
-  public error: string = 'A ocurrido un error interno';
+  public hoteles: IHotel[];
+  public error: boolean = false;
+  public filterStar: number = 5;
 
   constructor(
     private _hotelesService: HotelesService
@@ -23,13 +24,36 @@ export class ListaHotelesComponent implements OnInit {
     this.getHotels();
   }
 
-  public async getHotels(){
-    let result = await this._hotelesService.getHotel();
-    if(result.code == Coderror.Exitoso){
+  public async getHotels() {
+    let result = await this._hotelesService.getAllHotels();
+
+    if (result.code == Coderror.Exitoso) {
       this.hoteles = result.hotels;
     } else {
-      this.error = result.mensaje;
+      this.error = true;
     }
   }
+
+  public async getHotelsForStar(target: any) {
+    this.filterStar = Number(target.value);
+    let result = await this._hotelesService.getHotelForStart(this.filterStar);
+
+    if (result.code == Coderror.Exitoso) {
+      this.hoteles = result.hotels;
+    } else {
+      this.error = true;
+    }
+  }
+
+  public async getHotelForPrecio(order: string) {
+    let result = await this._hotelesService.getHotelForPrecio(order);
+
+    if (result.code == Coderror.Exitoso) {
+      this.hoteles = result.hotels;
+    } else {
+      this.error = true;
+    }
+  }
+
 
 }
